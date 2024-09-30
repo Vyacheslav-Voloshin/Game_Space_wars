@@ -54,5 +54,37 @@ public abstract class BaseObject {
     public void setRadius(double radius) {
         this.radius = radius;
     }
+
+    // метод прорисовки обєкту
+    public  void draw(){
+
+    }
+
+    // метод переміщення обєкту
+    public  void move(){
+
+    }
+
+    // обєкт помирає
+    public void die(){
+        isAlive=false;
+    }
+
+
+    // метод визначатиме - "пересіклися" об'єкти чи ні. Якщо перетнулися - повертати true, якщо ні - false.
+    /*
+    Деякі  пропозиції по реалізації цього методу:
+       Т.к. об'єкти ми умовно вважаємо колами, то пропоную таку формулу взаємодії:
+       Якщо центр кола одного об'єкта потрапив у коло іншого, то вважатимемо, що вони зіткнулися.
+    Або ще простіше:
+        дистанція_між_об'єктами < max (радіус_першого_об'єкта, радіус_другого_об'єкта).
+     */
+    public boolean isIntersect(BaseObject o){
+        double dx = x - o.x;
+        double dy = y - o.y;
+        double distance = Math.sqrt(dx * dx + dy * dy);
+        double max = Math.max(radius, o.radius);
+        return distance <= max;
+    }
 }
 
