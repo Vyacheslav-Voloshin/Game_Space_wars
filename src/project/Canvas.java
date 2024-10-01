@@ -57,21 +57,21 @@ public class Canvas {
     //метод очищатиме матрицю, щоб на ній знову можна було малювати.
     //У методі потрібно замінити всі символи матриці на прогалини
     public void clear(){
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                matrix[i][j] = ' ';
-            }
-        }
+        this.matrix = new char[height][width];
     }
 
     // метод малює матрицю на екран
-    public void print(){
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
+    public void print() {
+        System.out.println();
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                System.out.print(" ");
                 System.out.print(matrix[i][j]);
+                System.out.print(" ");
             }
             System.out.println();
         }
+        System.out.println();
         System.out.println();
         System.out.println();
     }
