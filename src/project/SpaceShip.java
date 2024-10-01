@@ -1,7 +1,27 @@
 package project;
 
-public class SpaceShip extends BaseObject{
-    public SpaceShip(double x, double y, double radius) {
-        super(x, y, radius);
-    }
+    /*
+    Для складності зробимо так: якщо користувач натиснув кнопку вліво,
+    корабель починає весь час рухатися вліво.
+    Якщо натиснути кнопку праворуч - весь час праворуч до упору.
+    Тому заведемо спеціальну змінну dx, яка зберігатиме напрямок руху корабля.
+    якщо dx = 1, корабель кожен хід йде на 1 праворуч,
+    якщо dx = -1, корабель кожен хід йде на 1 ліворуч.
+     */
+    public class SpaceShip extends BaseObject{
+        private double dx = 0;
+        public SpaceShip(double x, double y) {
+
+            super(x, y, 3);
+        }
+
+        // метод переміщуе корабель ліворуч
+        public void moveLeft(){
+            dx = -1;
+        }
+
+        // метод переміщуе корабель праворуч
+        public void moveRight(){
+            dx = 1;
+        }
 }
