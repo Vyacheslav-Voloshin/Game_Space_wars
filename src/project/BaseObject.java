@@ -56,7 +56,7 @@ public abstract class BaseObject {
     }
 
     // метод прорисовки обєкту
-    public  void draw(){
+    public  void draw(Canvas canvas){
 
     }
 

@@ -7,11 +7,13 @@ public class Bomb extends BaseObject{
     }
 
     //метод реалізує падіння бомби вниз
+    @Override
     public void move(){
         y++;
     }
 
     // метод встановлює точку с координатами х та у в кольор "В"
+    @Override
     public void draw(Canvas canvas){
         canvas.setPoint(x,y,'B');
     }
