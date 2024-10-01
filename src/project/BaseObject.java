@@ -14,9 +14,9 @@ package project;
  */
 public abstract class BaseObject {
 
-    private double x; //координата по довжині
-    private double y; //координата по висоті
-    private double radius; // розмір нашого космічного обєкту
+    protected double x; //координата по довжині
+    protected double y; //координата по висоті
+    protected double radius; // розмір нашого космічного обєкту
 
     private boolean isAlive; // зміна яка зберігає стан обєкту(живий чи ні)
 

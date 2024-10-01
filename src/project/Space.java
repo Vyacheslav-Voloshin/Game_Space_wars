@@ -16,6 +16,8 @@ public class Space {
 
     private List<Bomb> bombs = new ArrayList<>(); // список бомб
 
+    public static Space game; // створюємо зміну game
+
     public Space(int width, int height) {
         this.width = width;
         this.height = height;

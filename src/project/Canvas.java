@@ -57,7 +57,7 @@ public class Canvas {
     //метод очищатиме матрицю, щоб на ній знову можна було малювати.
     //У методі потрібно замінити всі символи матриці на прогалини
     public void clear(){
-        this.matrix = new char[height][width];
+        this.matrix = new char[height + 2][width + 2];
     }
 
     // метод малює матрицю на екран
