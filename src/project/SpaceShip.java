@@ -24,4 +24,24 @@ package project;
         public void moveRight(){
             dx = 1;
         }
+
+        // метод встановлює точку на екрані с координатами х та у в кольор "В"
+        @Override
+        public void draw(Canvas canvas) {
+
+        }
+        //метод переміщує корабель та перевіряє чи не виліз він за кордони космосу
+        @Override
+        public void move() {
+            x+=dx;
+            checkBorders(0,Space.game.getWidth(),0,Space.game.getHeight() );
+        }
+
+        //цей метод викликається коли необхідно здійснити постріл, корабель стріляє двома ракетами одночасно
+        public void fire(){
+            Rocket rocketLeft = new Rocket(x-2,y);
+            Rocket rocketRight = new Rocket(x+2,y);
+            Space.game.getRockets().add(rocketLeft);
+            Space.game.getRockets().add(rocketRight);
+        }
 }
