@@ -31,5 +31,27 @@ public class Canvas {
     public char[][] getMatrix() {
         return matrix;
     }
+
+    // метод - setPoint буде "ставити крапку в координатах x, y кольором c".
+    public void setPoint(double x, double y, char c) {
+        int rX = (int) Math.round(x);
+        int rY = (int) Math.round(y);
+        // якщо rX та rY знаходяться в межах матриці
+        if (0 <= rX && rX < matrix[0].length && 0 <= rY && rY < matrix.length) {
+            matrix[rY][rX] = c;
+        }
+    }
+
+    //метод - drawMatrix копіює передану йому картинку (матрицю) у матрицю Canvas.
+    //І не просто копіює, а починаючи з координат x, y.
+    public void drawMatrix(double x, double y, int[][] matrix, char c){
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j]!=0){
+                    setPoint(x+j,y+i,c);
+                }
+            }
+        }
+    }
 }
 
