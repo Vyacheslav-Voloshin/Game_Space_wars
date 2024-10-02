@@ -93,19 +93,26 @@ public class Space {
      */
     public List<BaseObject> getAllItems() {
         //Необхідно створити новий список і покласти в нього всі ігрові об'єкти.
-        List<BaseObject> objectList = new ArrayList<>();
-        objectList.addAll(getRockets());
-        objectList.addAll(getBombs());
-        objectList.addAll(getUfos());
-        objectList.add(ship);
-        return objectList;
+        ArrayList<BaseObject> list = new ArrayList<>(ufos);
+        list.add(ship);
+        list.addAll(bombs);
+        list.addAll(rockets);
+        return list;
     }
 
     /**
-     * Створюємо новий НЛО. 1 раз на 10 дзвінків.
+     * Створюємо новий НЛО. 1 раз на 10 викликів.
      */
     public void createUfo() {
         //Тут потрібно створити новий НЛО.
+        if (ufos.size() > 0) return;
+
+        int random10 = (int) (Math.random() * 10);
+        if (random10 == 0) {
+            double x = Math.random() * width;
+            double y = Math.random() * height / 2;
+            ufos.add(new Ufo(x, y));
+        }
     }
 
     /**
@@ -115,6 +122,15 @@ public class Space {
      */
     public void checkBombs() {
         //Тут потрібно перевірити всі можливі зіткнення для кожної бомби.
+        for (Bomb bomb : bombs) {
+            if (ship.isIntersect(bomb)) {
+                ship.die();
+                bomb.die();
+            }
+
+            if (bomb.getY() >= height)
+                bomb.die();
+        }
     }
 
     /**
@@ -124,6 +140,17 @@ public class Space {
      */
     public void checkRockets() {
         //Тут потрібно перевірити всі можливі зіткнення для кожної ракети.
+        for (Rocket rocket : rockets) {
+            for (Ufo ufo : ufos) {
+                if (ufo.isIntersect(rocket)) {
+                    ufo.die();
+                    rocket.die();
+                }
+            }
+
+            if (rocket.getY() <= 0)
+                rocket.die();
+        }
     }
 
     /**
@@ -131,6 +158,20 @@ public class Space {
      */
     public void removeDead() {
         //Тут потрібно видалити всі померлі об'єкти зі списків (крім космічного корабля)
+        for (BaseObject object : new ArrayList<BaseObject>(bombs)) {
+            if (!object.isAlive())
+                bombs.remove(object);
+        }
+
+        for (BaseObject object : new ArrayList<BaseObject>(rockets)) {
+            if (!object.isAlive())
+                rockets.remove(object);
+        }
+
+        for (BaseObject object : new ArrayList<BaseObject>(ufos)) {
+            if (!object.isAlive())
+                ufos.remove(object);
+        }
     }
 
     /**
