@@ -41,16 +41,14 @@ package project;
         //метод переміщує корабель та перевіряє чи не виліз він за кордони космосу
         @Override
         public void move() {
-            x+=dx;
-            checkBorders(radius, Space.game.getWidth() - radius + 1, 1, Space.game.getHeight() + 1);
+            x = x + dx;
 
+            checkBorders(radius, Space.game.getWidth() - radius + 1, 1, Space.game.getHeight() + 1);
         }
 
         //цей метод викликається коли необхідно здійснити постріл, корабель стріляє двома ракетами одночасно
         public void fire(){
-            Rocket rocketLeft = new Rocket(x-2,y);
-            Rocket rocketRight = new Rocket(x+2,y);
-            Space.game.getRockets().add(rocketLeft);
-            Space.game.getRockets().add(rocketRight);
+            Space.game.getRockets().add(new Rocket(x - 2, y));
+            Space.game.getRockets().add(new Rocket(x + 2, y));
         }
 }

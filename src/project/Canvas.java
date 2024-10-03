@@ -1,23 +1,62 @@
 package project;
 
-//Клас буде відповідальним за "відмальовування" об'єктів. З його допомогою вони малюватимуть себе.
+//РљР»Р°СЃ Р±СѓРґРµ РІС–РґРїРѕРІС–РґР°Р»СЊРЅРёРј Р·Р° "РІС–РґРјР°Р»СЊРѕРІСѓРІР°РЅРЅСЏ" РѕР±'С”РєС‚С–РІ. Р— Р№РѕРіРѕ РґРѕРїРѕРјРѕРіРѕСЋ РІРѕРЅРё РјР°Р»СЋРІР°С‚РёРјСѓС‚СЊ СЃРµР±Рµ.
 
 /*
-  Клас міститиме матрицю, куди ми малюватимемо.
-  У матриці є ширина та висота.
-  А ще в ній зберігатимемо не числа (int), а символи (char).
+  РљР»Р°СЃ РјС–СЃС‚РёС‚РёРјРµ РјР°С‚СЂРёС†СЋ, РєСѓРґРё РјРё РјР°Р»СЋРІР°С‚РёРјРµРјРѕ.
+  РЈ РјР°С‚СЂРёС†С– С” С€РёСЂРёРЅР° С‚Р° РІРёСЃРѕС‚Р°.
+  Рђ С‰Рµ РІ РЅС–Р№ Р·Р±РµСЂС–РіР°С‚РёРјРµРјРѕ РЅРµ С‡РёСЃР»Р° (int), Р° СЃРёРјРІРѕР»Рё (char).
  */
 public class Canvas {
 
-    private int width; // довжина
-    private int height; // висота
-
-    private char[][] matrix; // матриця
+    private int width;
+    private int height;
+    private char[][] matrix;
 
     public Canvas(int width, int height) {
         this.width = width;
         this.height = height;
-        matrix = new char[height+2][width+2];
+        this.matrix = new char[height + 2][width + 2];
+    }
+
+    public void clear() {
+        this.matrix = new char[height + 2][width + 2];
+    }
+
+    public void drawMatrix(double x, double y, int[][] matrix, char c) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] != 0) {
+                    setPoint(x + j, y + i, c);
+                }
+            }
+        }
+    }
+
+    public void setPoint(double x, double y, char c) {
+        int xRounded = (int) Math.round(x);
+        int yRounded = (int) Math.round(y);
+        if (xRounded >= 0 && xRounded < matrix[0].length && yRounded >= 0 && yRounded < matrix.length) {
+            matrix[yRounded][xRounded] = c;
+        }
+    }
+
+    public void print() {
+        System.out.println();
+
+        for (int i = 0; i < height + 2; i++) {
+            for (int j = 0; j < width + 2; j++) {
+                System.out.print(" ");
+                System.out.print(matrix[i][j]);
+                System.out.print(" ");
+            }
+
+            System.out.println();
+        }
+
+        System.out.println();
+        System.out.println();
+        System.out.println();
     }
 
     public int getWidth() {
@@ -30,50 +69,6 @@ public class Canvas {
 
     public char[][] getMatrix() {
         return matrix;
-    }
-
-    // метод - setPoint буде "ставити крапку в координатах x, y кольором c".
-    public void setPoint(double x, double y, char c) {
-        int rX = (int) Math.round(x);
-        int rY = (int) Math.round(y);
-        // якщо rX та rY знаходяться в межах матриці
-        if (0 <= rX && rX < matrix[0].length && 0 <= rY && rY < matrix.length) {
-            matrix[rY][rX] = c;
-        }
-    }
-
-    //метод - drawMatrix копіює передану йому картинку (матрицю) у матрицю Canvas.
-    //І не просто копіює, а починаючи з координат x, y.
-    public void drawMatrix(double x, double y, int[][] matrix, char c){
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                if (matrix[i][j]!=0){
-                    setPoint(x+j,y+i,c);
-                }
-            }
-        }
-    }
-
-    //метод очищатиме матрицю, щоб на ній знову можна було малювати.
-    //У методі потрібно замінити всі символи матриці на прогалини
-    public void clear(){
-        this.matrix = new char[height + 2][width + 2];
-    }
-
-    // метод малює матрицю на екран
-    public void print() {
-        System.out.println();
-        for (int i = 0; i < height+2; i++) {
-            for (int j = 0; j < width+2; j++) {
-                System.out.print(" ");
-                System.out.print(matrix[i][j]);
-                System.out.print(" ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-        System.out.println();
-        System.out.println();
     }
 }
 

@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
-
+//Клас, який забезпечує звязок між клавіатурою та логікою програми
 public class KeyboardObserver extends Thread {
     private Queue<KeyEvent> keyEvents = new ArrayBlockingQueue<KeyEvent>(100);
 

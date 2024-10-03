@@ -37,14 +37,14 @@ y <= height/2
         y += dy;
 
         checkBorders(radius, Space.game.getWidth() - radius + 1, radius - 1, Space.game.getHeight() / 2 - 1);
-        double rundomFire =  Math.random()*100;
-        if (rundomFire<=10){
+
+        int random10 = (int) (Math.random() * 10);
+        if (random10 == 0)
             fire();
-        }
     }
 
     //цей метод викликається коли НЛО скидає бомбу
-    public void fire(){
-        Space.game.getBombs().add(new Bomb(x, y+3));
+    public void fire() {
+        Space.game.getBombs().add(new Bomb(x, y + 3));
     }
 }

@@ -5,95 +5,92 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Space {
+    //РЁРёСЂРёРЅР° С‚Р° РІРёСЃРѕС‚Р° С–РіСЂРѕРІРѕРіРѕ РїРѕР»СЏ
+    private int width;
+    private int height;
 
-    private int width; // довжина космічного простору
-    private int height; // вистота космічного простору
-
-    private SpaceShip ship; // космічний корабель
-
-    private List<Ufo> ufos = new ArrayList<>(); // список НЛО
-
-    private List<Rocket> rockets = new ArrayList<>(); // список ракет
-
-    private List<Bomb> bombs = new ArrayList<>(); // список бомб
-
-    public static Space game; // створюємо зміну game
+    //РљРѕСЃРјС–С‡РЅРёР№ РєРѕСЂР°Р±РµР»СЊ
+    private SpaceShip ship;
+    //РЎРїРёСЃРѕРє РќР›Рћ
+    private List<Ufo> ufos = new ArrayList<Ufo>();
+    //РЎРїРёСЃРѕРє Р±РѕРјР±
+    private List<Bomb> bombs = new ArrayList<Bomb>();
+    //РЎРїРёСЃРѕРє СЂР°РєРµС‚
+    private List<Rocket> rockets = new ArrayList<Rocket>();
 
     public Space(int width, int height) {
         this.width = width;
         this.height = height;
     }
 
-
-    // данний метод керує логікой гри
-    public void run(){
-        //Створюємо холст для відображення наших обєктів
+    /**
+     * РћСЃРЅРѕРІРЅРёР№ С†РёРєР» РїСЂРѕРіСЂР°РјРё.
+     * РўСѓС‚ РІС–РґР±СѓРІР°СЋС‚СЊСЃСЏ РІСЃС– РІР°Р¶Р»РёРІС– РґС–С—
+     */
+    public void run() {
+        //РЎС‚РІРѕСЂСЋС”РјРѕ РїРѕР»РѕС‚РЅРѕ РґР»СЏ РІС–РґРјР°Р»СЊРѕРІСѓРІР°РЅРЅСЏ.
         Canvas canvas = new Canvas(width, height);
 
-        //Створюємо обєкт наглядач за клавіатурой та стартуєм його
+ //РЎС‚РІРѕСЂСЋС”РјРѕ РѕР± 'С”РєС‚ "СЃРїРѕСЃС‚РµСЂС–РіР°С‡ Р·Р° РєР»Р°РІС–Р°С‚СѓСЂРѕСЋ" С– СЃС‚Р°СЂС‚СѓС”РјРѕ Р№РѕРіРѕ.
         KeyboardObserver keyboardObserver = new KeyboardObserver();
         keyboardObserver.start();
 
-        //Ігра працює, поки корабель жив
+        //Р“СЂР° РїСЂР°С†СЋС”, РїРѕРєРё РєРѕСЂР°Р±РµР»СЊ Р¶РёРІРёР№
         while (ship.isAlive()) {
-            //"наглядач" містить події про натискання клавіш?
+            //"СЃРїРѕСЃС‚РµСЂС–РіР°С‡" РјС–СЃС‚РёС‚СЊ РїРѕРґС–С— РїСЂРѕ РЅР°С‚РёСЃРєР°РЅРЅСЏ РєР»Р°РІС–С€?
             if (keyboardObserver.hasKeyEvents()) {
                 KeyEvent event = keyboardObserver.getEventFromTop();
-                //Якщо "стрілка вліво" - сдвинути фігурку вліво
+                //РЇРєС‰Рѕ "СЃС‚СЂС–Р»РєР° РІР»С–РІРѕ" - Р·СЂСѓС€РёС‚Рё С„С–РіСѓСЂРєСѓ РІР»С–РІРѕ
                 System.out.print(event.getKeyCode());
                 if (event.getKeyCode() == KeyEvent.VK_LEFT)
                     ship.moveLeft();
-                    //Якщо "стрілка вправо" - сдвинути фігурку вправо
+                    //РЇРєС‰Рѕ "СЃС‚СЂС–Р»РєР° РІРїСЂР°РІРѕ" - Р·СЂСѓС€РёС‚Рё С„С–РіСѓСЂРєСѓ РІРїСЂР°РІРѕ
                 else if (event.getKeyCode() == KeyEvent.VK_RIGHT)
                     ship.moveRight();
-                    //Якщо "пробел" - стріляємо
+                    //РЇРєС‰Рѕ "РїСЂРѕР±С–Р»" - СЃС‚СЂС–Р»СЏС”РјРѕ
                 else if (event.getKeyCode() == KeyEvent.VK_SPACE)
                     ship.fire();
             }
 
-            //двигаємо всі обєкти гри
+            // СЂСѓС…Р°С”РјРѕ РІСЃС– РѕР±'С”РєС‚Рё РіСЂРё
             moveAllItems();
 
-            //перевіряємо зіткнення
+            //РїРµСЂРµРІС–СЂСЏС”РјРѕ Р·С–С‚РєРЅРµРЅРЅСЏ
             checkBombs();
             checkRockets();
-
-            //видаляємо померлі обєкти зі списків
+            //РІРёРґР°Р»СЏС”РјРѕ РїРѕРјРµСЂР»С– РѕР±'С”РєС‚Рё Р·С– СЃРїРёСЃРєС–РІ
             removeDead();
 
-            //Створюємо НЛО (1 раз в 10 ходов)
+            //РЎС‚РІРѕСЂСЋС”РјРѕ РќР›Рћ (1 СЂР°Р· РЅР° 10 С…РѕРґС–РІ)
             createUfo();
 
-            //відрисовуємо всі обєкти на холст, а холст виводимо на экран
+            //РћС‚СЂРёСЃРѕРІСѓС”РјРѕ РІСЃС– РѕР±'С”РєС‚Рё РЅР° РїРѕР»РѕС‚РЅРѕ, Р° РїРѕР»РѕС‚РЅРѕ РІРёРІРѕРґРёРјРѕ РЅР° РµРєСЂР°РЅ
             canvas.clear();
             draw(canvas);
             canvas.print();
 
-            //Пауза 300 міллісекунд
+            //РџР°СѓР·Р° 300 РјС–Р»С–СЃРµРєСѓРЅРґ
             Space.sleep(300);
         }
 
-        //Выводим сообщение "Game Over"
+        //Р’РёРІРѕРґРёРјРѕ РїРѕРІС–РґРѕРјР»РµРЅРЅСЏ "Game Over"
         System.out.println("Game Over!");
-
     }
 
     /**
-     * Рухаємо всі об'єкти гри
+     * Р СѓС…Р°С”РјРѕ РІСЃС– РѕР±'С”РєС‚Рё РіСЂРё
      */
     public void moveAllItems() {
-        //Потрібно отримати список всіх ігрових об'єктів і у кожного викликати метод move().
-        for (BaseObject bo:getAllItems()) {
-            bo.move();
+        for (BaseObject object : getAllItems()) {
+            object.move();
         }
     }
 
     /**
-     * Метод повертає загальний список, який містить усі об'єкти гри
+     * РњРµС‚РѕРґ РїРѕРІРµСЂС‚Р°С” Р·Р°РіР°Р»СЊРЅРёР№ СЃРїРёСЃРѕРє, СЏРєРёР№ РјС–СЃС‚РёС‚СЊ СѓСЃС– РѕР±'С”РєС‚Рё РіСЂРё
      */
     public List<BaseObject> getAllItems() {
-        //Необхідно створити новий список і покласти в нього всі ігрові об'єкти.
-        ArrayList<BaseObject> list = new ArrayList<>(ufos);
+        ArrayList<BaseObject> list = new ArrayList<BaseObject>(ufos);
         list.add(ship);
         list.addAll(bombs);
         list.addAll(rockets);
@@ -101,10 +98,9 @@ public class Space {
     }
 
     /**
-     * Створюємо новий НЛО. 1 раз на 10 викликів.
+     * РЎС‚РІРѕСЂСЋС”РјРѕ РЅРѕРІРёР№ РќР›Рћ. 1 СЂР°Р· РЅР° 10 РґР·РІС–РЅРєС–РІ.
      */
     public void createUfo() {
-        //Тут потрібно створити новий НЛО.
         if (ufos.size() > 0) return;
 
         int random10 = (int) (Math.random() * 10);
@@ -116,12 +112,11 @@ public class Space {
     }
 
     /**
-     * Перевіряємо бомби.
-     * а) зіткнення з кораблем (бомба та корабель вмирають)
-     * б) падіння нижче краю ігрового поля (бомба вмирає)
+     * РџРµСЂРµРІС–СЂСЏС”РјРѕ Р±РѕРјР±Рё.
+     * Р°) Р·С–С‚РєРЅРµРЅРЅСЏ Р· РєРѕСЂР°Р±Р»РµРј (Р±РѕРјР±Р° С‚Р° РєРѕСЂР°Р±РµР»СЊ РІРјРёСЂР°СЋС‚СЊ)
+     * Р±) РїР°РґС–РЅРЅСЏ РЅРёР¶С‡Рµ РєСЂР°СЋ С–РіСЂРѕРІРѕРіРѕ РїРѕР»СЏ (Р±РѕРјР±Р° РІРјРёСЂР°С”)
      */
     public void checkBombs() {
-        //Тут потрібно перевірити всі можливі зіткнення для кожної бомби.
         for (Bomb bomb : bombs) {
             if (ship.isIntersect(bomb)) {
                 ship.die();
@@ -134,12 +129,11 @@ public class Space {
     }
 
     /**
-     * Перевіряємо рокети.
-     * а) зіткнення з НЛО (ракета та НЛО вмирають)
-     * б) виліт вище краю ігрового поля (ракета вмирає)
+     * РџРµСЂРµРІС–СЂСЏС”РјРѕ СЂРѕРєРµС‚Рё.
+     * Р°) Р·С–С‚РєРЅРµРЅРЅСЏ Р· РќР›Рћ (СЂР°РєРµС‚Р° С‚Р° РќР›Рћ РІРјРёСЂР°СЋС‚СЊ)
+     * Р±) РІРёР»С–С‚ РІРёС‰Рµ РєСЂР°СЋ С–РіСЂРѕРІРѕРіРѕ РїРѕР»СЏ (СЂР°РєРµС‚Р° РІРјРёСЂР°С”)
      */
     public void checkRockets() {
-        //Тут потрібно перевірити всі можливі зіткнення для кожної ракети.
         for (Rocket rocket : rockets) {
             for (Ufo ufo : ufos) {
                 if (ufo.isIntersect(rocket)) {
@@ -154,10 +148,9 @@ public class Space {
     }
 
     /**
-     * Видаляємо померлі об'єкти (бомби, ракети, НЛО) зі списків
+     * Р’РёРґР°Р»СЏС”РјРѕ РїРѕРјРµСЂР»С– РѕР±'С”РєС‚Рё (Р±РѕРјР±Рё, СЂР°РєРµС‚Рё, РќР›Рћ) Р·С– СЃРїРёСЃРєС–РІ
      */
     public void removeDead() {
-        //Тут потрібно видалити всі померлі об'єкти зі списків (крім космічного корабля)
         for (BaseObject object : new ArrayList<BaseObject>(bombs)) {
             if (!object.isAlive())
                 bombs.remove(object);
@@ -175,12 +168,31 @@ public class Space {
     }
 
     /**
-     * Відображення всіх об'єктів гри:
-     * а) заповнюємо все полотно крапками.
-     * б) малюємо всі об'єкти на полотно.
+     * Р’С–РґРѕР±СЂР°Р¶РµРЅРЅСЏ РІСЃС–С… РѕР±'С”РєС‚С–РІ РіСЂРё:
+     * Р°) Р·Р°РїРѕРІРЅСЋС”РјРѕ РІСЃРµ РїРѕР»РѕС‚РЅРѕ РєСЂР°РїРєР°РјРё.
+     * Р±) РјР°Р»СЋС”РјРѕ РІСЃС– РѕР±'С”РєС‚Рё РЅР° РїРѕР»РѕС‚РЅРѕ.
      */
     public void draw(Canvas canvas) {
-        //Тут потрібно відмалювати всі об'єкти гри
+        //draw game
+        for (int i = 0; i < width + 2; i++) {
+            for (int j = 0; j < height + 2; j++) {
+                canvas.setPoint(i, j, '.');
+            }
+        }
+
+        for (int i = 0; i < width + 2; i++) {
+            canvas.setPoint(i, 0, '-');
+            canvas.setPoint(i, height + 1, '-');
+        }
+
+        for (int i = 0; i < height + 2; i++) {
+            canvas.setPoint(0, i, '|');
+            canvas.setPoint(width + 1, i, '|');
+        }
+
+        for (BaseObject object : getAllItems()) {
+            object.draw(canvas);
+        }
     }
 
 
@@ -188,7 +200,7 @@ public class Space {
         return ship;
     }
 
-    public void setShip (SpaceShip ship) {
+    public void setShip(SpaceShip ship) {
         this.ship = ship;
     }
 
@@ -212,15 +224,16 @@ public class Space {
         return rockets;
     }
 
+    public static Space game;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         game = new Space(20, 20);
         game.setShip(new SpaceShip(10, 18));
         game.run();
     }
 
     /**
-     * Метод робить паузу довгою delay мілісекунд.
+     * РњРµС‚РѕРґ РґРµР»Р°РµС‚ РїР°СѓР·Сѓ РґР»РёРЅРЅРѕР№ delay РјРёР»Р»РёСЃРµРєСѓРЅРґ.
      */
     public static void sleep(int delay) {
         try {

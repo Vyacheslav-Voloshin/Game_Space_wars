@@ -1,5 +1,5 @@
 package project;
-
+//Клас ракета випущена з SpaceShip
 public class Rocket extends BaseObject{
 
     public Rocket(double x, double y) {

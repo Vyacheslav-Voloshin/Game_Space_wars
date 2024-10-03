@@ -1,5 +1,7 @@
 package project;
-
+/*
+Клас для бомби яку скидає UFO
+ */
 public class Bomb extends BaseObject{
     public Bomb(double x, double y) {
 
